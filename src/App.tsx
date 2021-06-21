@@ -1,24 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import Header from './components/header/Header'
+import FileChooser from './components/file-chooser/FileChooser';
+import { ImageFile, ImageFileContext } from './context/file/FileContext';
+import Grid from './components/grid/Grid';
+import ControlPanel from './components/control-panel/ControlPanel';
 
 function App() {
+
+  const [imageFile, setImageFile] = React.useState<ImageFile>({file: undefined, loaded: false, height: 0, width: 0});
+
+  const [config, setConfig] = useState({grid: {
+    width: imageFile.width,
+    height: imageFile.height,
+    pixels: 20,
+    opacity: 0.5,
+    color: '#ffffff'
+  }});
+
+  const updateConfig = (value: any) => {
+    setConfig({...value})
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header title="Picasso's Grid"></Header>
+      <ImageFileContext.Provider value={{imageFile, setImageFile}}>
+        <section>
+          {imageFile.loaded && <Grid config={config}></Grid>}
+          <ControlPanel config={config} updateConfig={updateConfig}></ControlPanel>
+          <FileChooser config={config} setConfig={setConfig}></FileChooser>
+        </section>
+      </ImageFileContext.Provider>
     </div>
   );
 }
