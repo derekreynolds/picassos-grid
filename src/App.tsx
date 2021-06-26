@@ -16,7 +16,7 @@ function App() {
     height: imageFile.height,
     pixels: 20,
     opacity: 0.5,
-    color: '#ffffff'
+    color: '#000000'
   }});
 
   const updateConfig = (value: any) => {
