@@ -24,7 +24,25 @@ const Grid = (props: any) => {
         const xAxisGrid = d3.axisBottom(x).tickSize(-INNER_HEIGHT).ticks(xDomain);
         const yAxisGrid = d3.axisLeft(y).tickSize(-INNER_WIDTH).ticks(yDomain);   
   
+        const showTooltip = (positionX: number, positionY: number, label: string, value: number) => {
+          tooltip
+            .text(label + ": " + value)
+            .style("opacity", 1)
+            .style("visibility", "visible")
+            .style("top", (positionY-10)+"px") 
+            .style("left",(positionX+10)+"px");
+        }
+
+        const hideTooltip = () => {
+          tooltip
+            .transition()
+            .duration(1000)
+            .style("opacity", 0);
+        }
+
         svg.selectAll("*").remove();
+
+        const tooltip = d3.select("#tooltip");
         
         svg.attr('height', height - 50)
           .attr('width', width);
@@ -49,8 +67,13 @@ const Grid = (props: any) => {
             .attr("transform", "rotate(90)");
 
         xAxis.selectAll('line')
-            .style('opacity', props.config.grid.opacity)
-          ;
+          .on("mouseover", function(event: MouseEvent, xValue:any) {
+            showTooltip(event.pageX, event.pageY, 'X', xValue);
+          })
+          .on("mouseout", function(event: MouseEvent) {
+            hideTooltip();
+          }) 
+          .style('opacity', props.config.grid.opacity);
 
       const yAxis =svg.append('g')
           .attr('class', 'y axis-grid')
@@ -58,7 +81,13 @@ const Grid = (props: any) => {
           .style("color", props.config.grid.color)
           .call(yAxisGrid)
           .selectAll("line")
-            .style('opacity', props.config.grid.opacity);
+          .on("mouseover", function(event: MouseEvent, yValue:any) {
+            showTooltip(event.pageX, event.pageY, 'Y', yValue);
+          })
+          .on("mouseout", function(event: MouseEvent) {
+            hideTooltip();
+          }) 
+          .style('opacity', props.config.grid.opacity);
 
       yAxis.selectAll("text")
             .style("text-anchor", "end");   

@@ -16,7 +16,6 @@ const ControlPanel = (props: any) => {
     }
 
     const onChangeColor = (event: ChangeEvent<HTMLSelectElement>) => {
-        debugger
         let config = Object.assign({}, props.config);
         config.grid.color = event.target.value;
         props.updateConfig(config);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
+
 import './App.scss';
 import Header from './components/header/Header'
 import FileChooser from './components/file-chooser/FileChooser';
@@ -28,11 +28,12 @@ function App() {
       <Header title="Picasso's Grid"></Header>
       <ImageFileContext.Provider value={{imageFile, setImageFile}}>
         <section>
-          {imageFile.loaded && <Grid config={config}></Grid>}
+          {imageFile.loaded && <Grid config={config} updateConfig={updateConfig}></Grid>}
           <ControlPanel config={config} updateConfig={updateConfig}></ControlPanel>
           <FileChooser config={config} setConfig={setConfig}></FileChooser>
         </section>
       </ImageFileContext.Provider>
+      <div id="tooltip" className="tooltip"></div>
     </div>
   );
 }
