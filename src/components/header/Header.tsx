@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './Header.scss'
 
 interface HeaderProps {
@@ -6,6 +6,9 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
+    useEffect(() => {
+        document.title = props.title;
+    });
     return (
         <header className="Header">
             {props.title}
